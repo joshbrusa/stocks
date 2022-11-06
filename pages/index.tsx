@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { Line } from "react-chartjs-2";
 import {
   symbols,
@@ -170,7 +172,17 @@ export default function Page() {
 
   return (
     <>
-      <div className="mt-2 text-xl">Stonks</div>
+      <div className="p-2 w-full flex items-center justify-between">
+        <div className="mt-2 text-xl">Stonks</div>
+        <Link href={"https://github.com/joshbrusa/website-stonks"}>
+          <a target="_blank">
+            <Image src="/github.svg" height={32} width={32} />
+          </a>
+        </Link>
+      </div>
+      <div className="mt-2">
+        A GUI to interact with the TD Ameritrade API Get Price History.
+      </div>
       <form onSubmit={handleSubmit} className="mt-2 flex flex-col">
         <div className="mt-2 flex justify-between">
           <div>Symbol</div>
