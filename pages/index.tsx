@@ -191,7 +191,10 @@ export default function Page() {
       <form onSubmit={handleSubmit} className="mt-2 flex flex-col">
         <div className="mt-2 flex justify-between">
           <div>Symbol</div>
-          <select onChange={(e) => setSymbol(e.target.value)} className="ml-10">
+          <select
+            onChange={(e) => setSymbol(e.target.value)}
+            className="ml-10 surface rounded-lg"
+          >
             <option value=""></option>
             {symbols.map((item, index) => (
               <option key={index} value={item}>
@@ -204,7 +207,7 @@ export default function Page() {
           <div>Period Type</div>
           <select
             onChange={(e) => setPeriodType(e.target.value)}
-            className="ml-10"
+            className="ml-10 surface rounded-lg"
           >
             <option value=""></option>
             {periodTypes.map((item, index) => (
@@ -216,12 +219,15 @@ export default function Page() {
         </div>
         <div className="mt-2 flex justify-between">
           <div>Periods</div>
-          <select onChange={(e) => setPeriod(e.target.value)} className="ml-10">
+          <select
+            onChange={(e) => setPeriod(e.target.value)}
+            className="ml-10 surface rounded-lg"
+          >
             <option value=""></option>
             {periodOptions()}
           </select>
         </div>
-        <button type="submit" className="mt-2">
+        <button type="submit" className="mt-2 surface rounded-lg">
           Submit
         </button>
       </form>

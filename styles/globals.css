@@ -5,3 +5,9 @@
 body {
   background-color: #fdfdfc;
 }
+
+@layer components {
+  .surface {
+    @apply bg-black bg-opacity-5;
+  }
+}
