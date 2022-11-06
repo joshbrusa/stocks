@@ -188,9 +188,6 @@ export default function Page() {
           </a>
         </Link>
       </div>
-      <div className="mt-2">
-        A GUI to interact with the TD Ameritrade API Get Price History.
-      </div>
       <form onSubmit={handleSubmit} className="mt-2 flex flex-col">
         <div className="mt-2 flex justify-between">
           <div>Symbol</div>
