@@ -116,7 +116,7 @@ export default function Page() {
       x: {
         title: {
           display: true,
-          text: "Date [UTC]",
+          text: "Date",
         },
         ticks: {
           maxRotation: 0,
