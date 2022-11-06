@@ -135,8 +135,10 @@ export default function Page() {
     if (periodType === "day") {
       return (
         <>
-          {dayPeriods.map((item) => (
-            <option value={item}>{item}</option>
+          {dayPeriods.map((item, index) => (
+            <option key={index} value={item}>
+              {item}
+            </option>
           ))}
         </>
       );
@@ -144,8 +146,10 @@ export default function Page() {
     if (periodType === "month") {
       return (
         <>
-          {monthPeriods.map((item) => (
-            <option value={item}>{item}</option>
+          {monthPeriods.map((item, index) => (
+            <option key={index} value={item}>
+              {item}
+            </option>
           ))}
         </>
       );
@@ -153,8 +157,10 @@ export default function Page() {
     if (periodType === "year") {
       return (
         <>
-          {yearPeriods.map((item) => (
-            <option value={item}>{item}</option>
+          {yearPeriods.map((item, index) => (
+            <option key={index} value={item}>
+              {item}
+            </option>
           ))}
         </>
       );
@@ -162,8 +168,10 @@ export default function Page() {
     if (periodType === "ytd") {
       return (
         <>
-          {ytdPeriods.map((item) => (
-            <option value={item}>{item}</option>
+          {ytdPeriods.map((item, index) => (
+            <option key={index} value={item}>
+              {item}
+            </option>
           ))}
         </>
       );
@@ -188,8 +196,10 @@ export default function Page() {
           <div>Symbol</div>
           <select onChange={(e) => setSymbol(e.target.value)} className="ml-10">
             <option value=""></option>
-            {symbols.map((item) => (
-              <option value={item}>{item}</option>
+            {symbols.map((item, index) => (
+              <option key={index} value={item}>
+                {item}
+              </option>
             ))}
           </select>
         </div>
@@ -200,8 +210,10 @@ export default function Page() {
             className="ml-10"
           >
             <option value=""></option>
-            {periodTypes.map((item) => (
-              <option value={item}>{item}</option>
+            {periodTypes.map((item, index) => (
+              <option key={index} value={item}>
+                {item}
+              </option>
             ))}
           </select>
         </div>
