@@ -5,9 +5,3 @@
 body {
   background-color: #fdfdfc;
 }
-
-@layer components {
-  .page-title {
-    @apply p-2 text-xl;
-  }
-}

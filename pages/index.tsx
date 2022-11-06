@@ -1,5 +1,13 @@
 import { useState } from "react";
 import { Line } from "react-chartjs-2";
+import {
+  symbols,
+  periodTypes,
+  dayPeriods,
+  monthPeriods,
+  yearPeriods,
+  ytdPeriods,
+} from "../constants/symbol";
 import type { SyntheticEvent } from "react";
 
 import {
@@ -25,12 +33,18 @@ ChartJS.register(
 
 export default function Page() {
   const [symbol, setSymbol] = useState("");
+  const [periodType, setPeriodType] = useState("");
+  const [period, setPeriod] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [labels, setLabels] = useState(null);
-  const [data, setData] = useState(null);
+  const [display, setDisplay] = useState(false);
+  const [labels, setLabels] = useState([]);
+  const [high, setHigh] = useState([]);
+  const [low, setLow] = useState([]);
+  const [close, setClose] = useState([]);
 
   async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
+    setDisplay(false);
     setErrorMessage("");
 
     const res = await fetch("/api/symbol", {
@@ -38,7 +52,7 @@ export default function Page() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ symbol }),
+      body: JSON.stringify({ symbol, periodType, period }),
     });
 
     if (!res.ok) {
@@ -48,30 +62,153 @@ export default function Page() {
 
     const json = await res.json();
 
-    if (!json.empty) {
-      setLabels(
-        json.candles.map((item: { datetime: number }) => item.datetime)
+    if (json.error) {
+      setErrorMessage(json.error);
+      return;
+    }
+
+    if (json.empty) {
+      setErrorMessage("Response empty.");
+      return;
+    }
+
+    setLabels(
+      json.candles.map((item: { datetime: number }) =>
+        new Date(item.datetime).toLocaleDateString()
+      )
+    );
+    setHigh(json.candles.map((item: { high: number }) => item.high));
+    setLow(json.candles.map((item: { low: number }) => item.low));
+    setClose(json.candles.map((item: { close: number }) => item.close));
+
+    setDisplay(true);
+  }
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "High",
+        data: high,
+        borderColor: "rgb(255,0,0)",
+        backgroundColor: "rgb(255,0,0)",
+      },
+      {
+        label: "Low",
+        data: low,
+        borderColor: "rgb(0,255,0)",
+        backgroundColor: "rgb(0,255,0)",
+      },
+      {
+        label: "Close",
+        data: close,
+        borderColor: "rgb(0,0,255)",
+        backgroundColor: "rgb(0,0,255)",
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Date [UTC]",
+        },
+        ticks: {
+          maxRotation: 0,
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Value [USD]",
+        },
+      },
+    },
+  };
+
+  function periodOptions() {
+    if (periodType === "day") {
+      return (
+        <>
+          {dayPeriods.map((item) => (
+            <option value={item}>{item}</option>
+          ))}
+        </>
       );
-      setData(json.candles.map((item: { close: number }) => item.close));
+    }
+    if (periodType === "month") {
+      return (
+        <>
+          {monthPeriods.map((item) => (
+            <option value={item}>{item}</option>
+          ))}
+        </>
+      );
+    }
+    if (periodType === "year") {
+      return (
+        <>
+          {yearPeriods.map((item) => (
+            <option value={item}>{item}</option>
+          ))}
+        </>
+      );
+    }
+    if (periodType === "ytd") {
+      return (
+        <>
+          {ytdPeriods.map((item) => (
+            <option value={item}>{item}</option>
+          ))}
+        </>
+      );
     }
   }
 
   return (
     <>
-      <div className="page-title">Stonks</div>
-      <div className="mt-2">Enter a stock symbol and visualize the data.</div>
+      <div className="mt-2 text-xl">Stonks</div>
       <form onSubmit={handleSubmit} className="mt-2 flex flex-col">
-        <input
-          type="text"
-          placeholder="Symbol (case-sensitive)"
-          value={symbol}
-          onChange={(e) => setSymbol(e.target.value)}
-        />
-        <button type="submit">Submit</button>
+        <div className="mt-2 flex justify-between">
+          <div>Symbol</div>
+          <select onChange={(e) => setSymbol(e.target.value)} className="ml-10">
+            <option value=""></option>
+            {symbols.map((item) => (
+              <option value={item}>{item}</option>
+            ))}
+          </select>
+        </div>
+        <div className="mt-2 flex justify-between">
+          <div>Period Type</div>
+          <select
+            onChange={(e) => setPeriodType(e.target.value)}
+            className="ml-10"
+          >
+            <option value=""></option>
+            {periodTypes.map((item) => (
+              <option value={item}>{item}</option>
+            ))}
+          </select>
+        </div>
+        <div className="mt-2 flex justify-between">
+          <div>Periods</div>
+          <select onChange={(e) => setPeriod(e.target.value)} className="ml-10">
+            <option value=""></option>
+            {periodOptions()}
+          </select>
+        </div>
+        <button type="submit" className="mt-2">
+          Submit
+        </button>
       </form>
-      <div className="">{errorMessage}</div>
-      {labels && data ? (
-        <Line data={{ labels: labels, datasets: [{ data: data }] }} />
+      <div className="text-red-500">{errorMessage}</div>
+      {display ? (
+        <div className="mt-2 w-full">
+          <Line data={data} options={options} />
+        </div>
       ) : null}
     </>
   );
