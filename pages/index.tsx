@@ -176,7 +176,7 @@ export default function Page() {
         <div className="mt-2 text-xl">Stonks</div>
         <Link href={"https://github.com/joshbrusa/website-stonks"}>
           <a target="_blank">
-            <Image src="/github.svg" height={32} width={32} />
+            <Image src="/github.svg" alt="GitHub" height={32} width={32} />
           </a>
         </Link>
       </div>
