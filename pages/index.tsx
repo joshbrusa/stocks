@@ -181,8 +181,8 @@ export default function Page() {
   return (
     <>
       <div className="p-2 w-full flex items-center justify-between">
-        <div className="mt-2 text-xl">Stonks</div>
-        <Link href={"https://github.com/joshbrusa/website-stonks"}>
+        <div className="mt-2 text-xl">Stocks</div>
+        <Link href={"https://github.com/joshbrusa/stocks"}>
           <a target="_blank">
             <Image src="/github.svg" alt="GitHub" height={32} width={32} />
           </a>
